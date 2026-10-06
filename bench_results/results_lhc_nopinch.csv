@@ -1,0 +1,4 @@
+test,run_id,NumMacPar,XRes,YRes,ZRes,interp,total_ms,initMPs_ms,updateQ_ms,updateFi_ms,updateForce_ms,collision_ms,pinch_ms,bunchUpdate_ms,L_eff,L_nom,sqrtS,peakMem_bytes
+lhc_nopinch,1,50000,30,30,30,cubic,12046.510,29.427,221.427,11786.803,4.480,1.424,0.000,31.073,1.192739e+34,1.202026e+34,1.400000e+04,2865256
+lhc_nopinch,2,50000,30,30,30,cubic,12066.117,28.308,181.218,11847.368,4.413,1.428,0.000,30.533,1.191621e+34,1.202026e+34,1.400000e+04,2865256
+lhc_nopinch,3,50000,30,30,30,cubic,12030.094,28.183,182.041,11810.332,4.366,1.430,0.000,30.936,1.192140e+34,1.202026e+34,1.400000e+04,2865256
