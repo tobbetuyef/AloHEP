@@ -377,9 +377,10 @@ def _beam_sigmas(json_path, mass_eV):
     return (math.sqrt(ex * v['BetaHor']), math.sqrt(ey * v['BetaVer']),
             v['BunLen'], v['BetaHor'], v['BetaVer'])
 
-def _convolved_factor(b1, b2):
-    return (2 * max(b1[0], b2[0]) * max(b1[1], b2[1])
-            / (math.hypot(b1[0], b2[0]) * math.hypot(b1[1], b2[1])))
+def _read_lgeo():
+    if not os.path.exists(os.path.join(BENCH_DIR, 'results_lgeo.csv')):
+        return {}
+    return {str(r['label']): r['L_geo'] for r in read_csv('results_lgeo.csv')}
 
 def _H_unequal(b1, b2):
     szc = math.sqrt(b1[2]**2 + b2[2]**2) / 2.0
@@ -396,22 +397,27 @@ _M_P = 938.28e6
 _M_E = 0.510998950e6
 
 asym_path = os.path.join(BENCH_DIR, 'results_asymmetric.csv')
-if os.path.exists(asym_path):
+_lgeo = _read_lgeo()
+if os.path.exists(asym_path) and _lgeo:
     _asym_specs = [
-        ('HERA ($ep$)\n$\\sqrt{s}=318.7$ GeV', 'hera_ep_hgonly', 'hera_ep',
+        ('HERA ($ep$)\n$\\sqrt{s}=318.7$ GeV', 'hera_ep_hgonly', 'hera_ep', 'HERA_ep',
          _beam_sigmas('save/proton-ele/HERA.JSON', _M_P),
          _beam_sigmas('save/electron-ring/HERA.JSON', _M_E)),
-        ('EIC ($ep$)\n$\\sqrt{s}=105$ GeV', 'eic_ep_hgonly', 'eic_ep',
+        ('EIC ($ep$)\n$\\sqrt{s}=105$ GeV', 'eic_ep_hgonly', 'eic_ep', 'EIC_ep',
          _beam_sigmas('save/proton-ele/EIC-PDG1.JSON', _M_P),
          _beam_sigmas('save/electron-ring/EIC-PDG.JSON', _M_E)),
     ]
     asym_rows = read_csv('results_asymmetric.csv')
     _labels, _hg_means, _hg_stds, _fp_means, _fp_stds, _analytic = [], [], [], [], [], []
-    for lab, test_hg, test_fp, bp, be in _asym_specs:
-        fac = _convolved_factor(bp, be)
-        hg_ratios = [r['L_eff'] / (r['L_nom'] * fac) for r in asym_rows
+    for lab, test_hg, test_fp, lgeo_key, bp, be in _asym_specs:
+        if lgeo_key not in _lgeo:
+            print('Warning: %s missing from results_lgeo.csv; skipped in fig_asymmetric.png' % lgeo_key,
+                  file=sys.stderr)
+            continue
+        lgeo = _lgeo[lgeo_key]
+        hg_ratios = [r['L_eff'] / lgeo for r in asym_rows
                      if str(r.get('test')) == test_hg]
-        fp_ratios = [r['L_eff'] / (r['L_nom'] * fac) for r in asym_rows
+        fp_ratios = [r['L_eff'] / lgeo for r in asym_rows
                      if str(r.get('test')) == test_fp]
         if not hg_ratios or not fp_ratios:
             continue
@@ -454,8 +460,8 @@ if os.path.exists(asym_path):
         print('Saved media/fig_asymmetric.png')
         plt.close(fig7)
 else:
-    print('Skipping fig_asymmetric.png: results_asymmetric.csv not found '
-          '(run run_asymmetric.sh and run_asymmetric_hgonly.sh first).', file=sys.stderr)
+    print('Skipping fig_asymmetric.png: results_asymmetric.csv or results_lgeo.csv not found '
+          '(run run_asymmetric.sh, run_asymmetric_hgonly.sh and run_lgeo.sh first).', file=sys.stderr)
 
 
 print('\nDone.  Figures written to media/')

@@ -38,6 +38,11 @@ echo "[2/3] ILC hourglass A=5, 50x50x50 (beta*_y = 6e-5 m) — $(date)" >&2
 for r in 1 2 3; do run $ILC_LEFT $ILC_RIGHT -macrop 50000 -xres 50 -yres 50 -zres 50 -hourglass -nocrossing -betay 6.000000e-05 | awk -v pre="hourglass_ny50,$r," '{print pre $0 ",5.0"}' | tee -a "$OUT"; done
 
 OUT="$OUTDIR/results_ilc_hgpinch.csv"; echo "test,run_id,$HEADER" > "$OUT"
-echo "[3/3] ILC hourglass+pinch 50^3 — $(date)" >&2
-for r in 1 2 3; do run $ILC_LEFT $ILC_RIGHT -macrop 50000 -xres 50 -yres 50 -zres 50 -hourglass -pinch | sed "s/^/ilc_hgpinch,$r,/" | tee -a "$OUT"; done
+echo "[3/3] ILC hourglass+pinch, 50^3 and the four convergence controls — $(date)" >&2
+hgp() { local tag=$1; shift; for r in 1 2 3; do run $ILC_LEFT $ILC_RIGHT -hourglass -pinch "$@" | sed "s/^/$tag,$r,/" | tee -a "$OUT"; done; }
+hgp ilc_hgpinch       -macrop 50000  -xres 50 -yres 50  -zres 50
+hgp ilc_hgpinch_ny100 -macrop 50000  -xres 50 -yres 100 -zres 50
+hgp ilc_hgpinch_nz100 -macrop 50000  -xres 50 -yres 50  -zres 100
+hgp ilc_hgpinch_k6    -macrop 50000  -xres 75 -yres 75  -zres 50 -ipscale 6
+hgp ilc_hgpinch_mp5e5 -macrop 500000 -xres 50 -yres 50  -zres 50
 echo "Done — $(date)" >&2

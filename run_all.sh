@@ -29,6 +29,7 @@ run_step() {
 run_step "build"          bash build.sh
 
 run_step "fom"            bash run_fom.sh
+run_step "lgeo"           bash run_lgeo.sh
 run_step "hourglass"      bash run_hourglass.sh
 run_step "crossing"       bash run_crossing.sh
 run_step "heavyion"       bash run_heavyion.sh
@@ -36,6 +37,7 @@ run_step "muon"           bash run_muon.sh
 run_step "asymmetric"     bash run_asymmetric.sh
 run_step "asymmetric-hgonly" bash run_asymmetric_hgonly.sh
 run_step "benchmark"      bash run_benchmark.sh
+run_step "extra"          bash run_extra.sh
 
 run_step "plots"          python3 generate_plots.py
 
