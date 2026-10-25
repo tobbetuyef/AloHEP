@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use AloHEP, please cite the article listed under preferred-citation."
+type: software
+title: "AloHEP: A Luminosity Optimizer for High Energy Physics"
+version: "2.0"
+license: MIT
+repository-code: "https://github.com/tobbetuyef/AloHEP"
+abstract: >-
+  Java application that simulates the interaction region of symmetric and asymmetric
+  particle colliders with a slice-based particle-in-cell model (cloud-in-cell charge
+  assignment, direct Green's-function potential solve, bicubic force interpolation) and
+  computes the luminosity with the hourglass effect, a crossing angle and the beam-beam
+  pinch, for any pairing of electrons, positrons, protons, muons and heavy ions.
+keywords:
+  - luminosity
+  - beam-beam interaction
+  - hourglass effect
+  - asymmetric colliders
+  - particle-in-cell
+authors:
+  - family-names: "Dağlı"
+    given-names: "Burak"
+    affiliation: "TOBB University of Economics and Technology, Ankara, Türkiye"
+  - family-names: "Karaca"
+    given-names: "Yiğitali"
+    affiliation: "TOBB University of Economics and Technology, Ankara, Türkiye"
+    email: "ykaraca@etu.edu.tr"
+  - family-names: "Sultansoy"
+    given-names: "Saleh"
+    affiliation: "TOBB University of Economics and Technology, Ankara, Türkiye"
+  - family-names: "Kaya"
+    given-names: "Ümit"
+    affiliation: "Ankara University, Ankara, Türkiye"
+preferred-citation:
+  type: article
+  title: "AloHEP Software: A luminosity optimizer for High Energy Physics colliders"
+  authors:
+    - family-names: "Dağlı"
+      given-names: "Burak"
+    - family-names: "Karaca"
+      given-names: "Yiğitali"
+  year: 2026
+  url: "https://arxiv.org/abs/2610.09839"
+  identifiers:
+    - type: other
+      value: "arXiv:2610.09839"

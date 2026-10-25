@@ -1,0 +1,27 @@
+=== ALOHEP Headless Results ===
+Left:  proton-ele/EIC-PDG1 (proton)
+Right: electron-ring/EIC-PDG (electron)
+Macroparticles: 50000
+Grid: 50x50x50
+Crossing:     true
+Interp:       bicubic
+Simulation:   true
+Pinch:        true
+Hourglass:    true
+Beamstrahlung:false
+Decay:        false
+Seed:         1
+sqrt(s):      1.048809e+02 GeV
+L_nominal:    1.046781e+34 cm^-2 s^-1
+L_effective:  1.021153e+34 cm^-2 s^-1
+Ratio eff/nom: 0.975518
+Compute time: 220183.807 ms
+Peak memory:  21 MB
+--- Per-Phase Breakdown ---
+initMPs:       56.190 ms
+updateQ:       396.974 ms
+updateFi:      219025.807 ms
+updateForce:   16.528 ms
+collision:     3.883 ms
+pinch:         638.739 ms
+bunchUpdate:   99.760 ms

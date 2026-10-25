@@ -1,44 +1,72 @@
-# Welcome to the AloHEP Readme!!
+# AloHEP: A Luminosity Optimizer for High Energy Physics
 
-The previous version of AloHEP (v1.0) is available at [github.com/yefetu/ALOHEP](https://github.com/yefetu/ALOHEP).
+AloHEP simulates the interaction region of symmetric and asymmetric particle colliders and
+computes their luminosity. Each bunch is represented by macroparticles on a slice-based
+particle-in-cell grid; the hourglass effect, a crossing angle and the beam–beam pinch can be
+switched on independently, and the two beams can be any pairing of electrons, positrons,
+protons, muons and heavy ions. The methods and the verification of the code are described in
+B. Dağlı, Y. Karaca, *AloHEP Software: A luminosity optimizer for High Energy Physics
+colliders*, [arXiv:2610.09839](https://arxiv.org/abs/2610.09839).
 
-## Alohep installation for Windows
+This repository holds version 2.0. The previous version of AloHEP (v1.0) is available at
+[github.com/yefetu/ALOHEP](https://github.com/yefetu/ALOHEP).
 
-Requirement: Java Runtime Environment (JRE) 8 or later (tested with OpenJDK 17 and 21)  
-First you will go to releases 
-![image](https://user-images.githubusercontent.com/102833131/213984651-2e7cebfe-6096-4ab6-8279-ef8a54ebb867.png)
+## Installation (Windows, Linux, macOS)
 
-Secondly you will download AloHEP.zip
-![image](https://user-images.githubusercontent.com/102833131/213984943-bd7073f3-b6ee-4447-8359-cc647c620bc0.png)
+Requirement: Java Runtime Environment (JRE) 8 or later.
 
-Thirdly you will extract zip 
+1. Download [`AloHEP-2.0.zip`](https://github.com/tobbetuyef/AloHEP/releases/download/v2.0/AloHEP-2.0.zip)
+   from the [v2.0 release](https://github.com/tobbetuyef/AloHEP/releases/tag/v2.0) of this
+   repository (the [Releases](https://github.com/tobbetuyef/AloHEP/releases) page lists every
+   version).
+2. Extract the zip file. The `AloHEP` folder contains `AloHEP.jar`, `gson-2.9.1.jar`, the
+   `save` folder with the parameter database, the `test_run` folder with a sample run and its
+   expected output, this README and the licences.
+3. Open a terminal in the extracted `AloHEP` folder and start the program with
+   `java -jar AloHEP.jar`. On Windows, double-clicking `AloHEP.jar` also works.
 
-Finally you will select Alohep.jar
-![image](https://user-images.githubusercontent.com/102833131/213985244-7959dedf-10cb-4f92-9b35-7ac6f5c3d00d.png)
+The parameter files are read from `./save` relative to the folder the program is started
+from, so `AloHEP.jar` must stay next to `save` and `gson-2.9.1.jar`. On macOS and Linux a
+double-click may start Java in another folder (e.g. the home folder); the program then finds
+no `save` folder and exits without opening a window, so use the terminal command above.
 
-
-## Alohep userguide 
-The AloHEP software, developed using the Java programming language, is composed of the "save" folder where accelerator-related save files are stored and the executable "AloHEP.jar" file that contains the software codes. In the save file, accelerators are classified and distributed into subfolders according to the particle type used. If a subfolder for the same particle-containing accelerators is desired, a "-" can be added after the particle name and desired naming can be done. JSON files belonging to each accelerator are located in the particle subfolders. These JSON files contain accelerator-related parameters and can be edited using text editors. The record file also includes the "settings.JSON" file containing the simulation parameters. These simulation parameters can be edited both in this file and through the AloHEP interface. The AloHEP.jar file must be located in the same folder as the save folder to be able to run. When the "AloHEP.jar" is run, the main panel of the AloHEP software opens (Figure 1).
+## User guide
+AloHEP, developed in the Java programming language, consists of the "save" folder, in which the accelerator parameter files are stored, and the executable "AloHEP.jar" file that contains the program. In the save folder, accelerators are classified into subfolders according to the particle type used. If a further subfolder for accelerators with the same particle is desired, a "-" can be added after the particle name followed by any name. The JSON files of the accelerators are located in the particle subfolders; they contain the accelerator parameters and can be edited with a text editor. The save folder also includes the "settings.JSON" file with the simulation parameters, which can be edited both in this file and through the AloHEP interface. When "AloHEP.jar" is run, the main panel of AloHEP opens (Figure 1).
 
 ![image](https://user-images.githubusercontent.com/102833131/213978632-c10b790e-43cf-41b6-baa7-f3cacdaaa679.png)
 
-Figure 1 AloHEP Userinterface
+Figure 1. AloHEP user interface
 
-The main panel consists of three sub-panels. The top two panels are accelerator panels where information about the accelerators in which particle collisions are to be performed in the simulation is entered, and the bottom panel is the settings panel where the parameters of the simulation are entered. When selecting the accelerator to be used in the collision simulation, the particle type used is selected first. After the particle type is selected, the accelerators in the bottom of the panel are automatically updated accordingly, so the accelerator can be selected from the ones listed in the bottom of the panel. If accelerator parameters not found in the AloHEP software's save file are desired to be used, the accelerator type "Custom" is selected. After this selection, modifications can be made based on the last selected accelerator parameters, and the edited parameters can be added to the AloHEP software's save file with the desired name using the "save" button at the top of the panel. After selecting the accelerators in the AloHEP software, the number of macro-particles in the simulation, the simulation resolution, and other simulation parameters can be adjusted from the settings panel at the bottom of the interface, and after selecting the desired effects in the simulation, the simulation can be started by pressing the "calculate" button. The AloHEP software has a graphic panel that shows the progress of macro-particles step by step and appears when the simulation starts. The changes in the shape of the packets can be tracked through this interface.
+The main panel consists of three sub-panels. The top two panels are the accelerator panels, where the beams that are to collide in the simulation are defined, and the bottom panel is the settings panel, where the parameters of the simulation are entered. To select an accelerator, the particle type is selected first; the accelerators listed at the bottom of the panel are then updated automatically, and one of them can be selected. If accelerator parameters that are not in the save folder are to be used, the accelerator type "Custom" is selected. The parameters of the last selected accelerator can then be modified, and the edited parameters can be added to the save folder under a chosen name with the "save" button at the top of the panel. After the accelerators are selected, the number of macroparticles, the resolution and the other simulation parameters can be adjusted in the settings panel, the desired effects are selected, and the simulation is started with the "Calculate" button. A graphic panel that shows the macroparticles step by step appears when the simulation starts, so the changes in the shape of the bunches can be followed.
 
 ![image](https://user-images.githubusercontent.com/102833131/213979261-b313f598-8ed5-42b0-a934-eb36ee889cd5.png)
 
-Figure 2. Alohep Graphic Interface
+Figure 2. AloHEP graphic interface
 
-While the graphic panel is running, the axis on which the collision is being observed can be changed by pressing the x, y and z keys on the keyboard. The selected axis can be zoomed in  using the mouse wheel. This way, the change in shape of the bunch can be easily tracked during the simulation. Additionally, by pressing the r key on the keyboard, the boundaries of the collision region, slices and cells can be seen on the graphic panel during the simulation. At the end of the simulation process, the graphic panel closes and the result panel opens. Here, the results obtained for the center of mass energy and luminosity of the collision; the cross-sections of the bunches, the beam-beam tuneshift and the disruption parameters are displayed.
+While the graphic panel is running, the axis along which the collision is observed can be changed with the x, y and z keys, and the view can be zoomed with the mouse wheel. Pressing the r key shows the boundaries of the collision region, the slices and the cells. At the end of the simulation the graphic panel closes and the result panel opens. It reports the centre-of-mass energy and the luminosity of the collision, the transverse sizes of the bunches, and the beam–beam tune shifts or the disruption parameters.
 
 ![image](https://user-images.githubusercontent.com/102833131/213979993-2e0b15a5-b228-4281-aa76-072ccd0ee5c1.png)
 
-Figure 3. Alohep Result Panel
+Figure 3. AloHEP result panel
 
- The luminosity value is calculated in two different ways, nominal and effective. The nominal luminosity value is obtained analytically using Equation 1, while the effective luminosity value is obtained from the results of the simulation. Additionally, by comparing the two luminosity values, factors that increase/decrease the luminosity due to the effects added in the simulation are obtained.
+The luminosity is reported in two ways, nominal and effective. The nominal luminosity is the
+analytic geometric luminosity of the two Gaussian beams,
 
-![image](https://user-images.githubusercontent.com/102833131/213977517-c75a03a4-9241-45ef-aecf-7b7e2c56745a.png)                         (Equation 1)
+$$\mathcal{L}_{\rm nom}=\frac{N_1N_2\,f_c}{2\pi\sqrt{\sigma_{x1}^2+\sigma_{x2}^2}\,\sqrt{\sigma_{y1}^2+\sigma_{y2}^2}},$$
+
+where $N_{1,2}$ are the bunch populations, $\sigma_{x,y}$ the transverse beam sizes at the
+interaction point and $f_c$ the collision frequency (the smaller of the two beams' values, see
+below). For identical beams it reduces to $N_1N_2f_c/(4\pi\sigma_x\sigma_y)$. The effective
+luminosity is the result of the simulation, and the ratio of the two is the
+enhancement/reduction factor due to the effects included in the simulation. When the
+simulation is switched off (all effects cleared), the analytic value is computed for the beams
+exactly as entered; the *Matched Beams* button equalises the transverse spot sizes of the two
+beams only when it is pressed.
+
+Versions before 2.0 reported instead the equal-beam approximation
+$N_1N_2f_c/(4\pi\max(\sigma_{x1},\sigma_{x2})\max(\sigma_{y1},\sigma_{y2}))$, which coincides
+with the expression above for identical beams and is smaller for beams of unequal size, and
+applied the Matched Beams helper automatically when the simulation was switched off.
 
 ## Parameter reference
 
@@ -71,7 +99,7 @@ tune shifts ξ<sub>x,y</sub>). Built-in species (charge, mass, lifetime): electr
 | `RepFrq` | Repetition rate of beam | Hz | f<sub>c</sub> = RepFrq × turns × NumBunInBeam, with turns = `Turn` if given, otherwise γτ<sub>0</sub>c/Circum (unstable species only) |
 | `Circum` | Circumference | km | last-resort f<sub>c</sub> = c/Circum × NumBunInBeam; with `Turn` it sets the storage time |
 | `Turn` | Number of turns | – | turns per store: storage time t = Circum × Turn / c for the decay factor, and the `RepFrq` option above |
-| `DutyFac` | Duty factor | – | multiplies the luminosity (the smaller of the two beams' values; default 1) |
+| `DutyFac` | Duty factor | – | multiplies the effective luminosity (the smaller of the two beams' values; default 1) |
 
 Precedence for the collision frequency of one beam: `ColFrq` > `RevFrq` > `PulFrq` >
 `RepFrq` × turns > c/`Circum`; the pair uses the smaller of the two beams' values. Keys
@@ -82,7 +110,8 @@ accepted by the beam editor but not read by the engine: `Beta`, `EmNor`, `BunSpa
 replaced by its average over the store, N → N γτ<sub>0</sub>(1 − e<sup>−t/γτ<sub>0</sub></sup>)/t
 with t = Circum × Turn / c (t = γτ<sub>0</sub>, one dilated lifetime, when `Turn` is absent);
 when both beams are unstable the product N<sub>1</sub>N<sub>2</sub> is averaged jointly. Stable
-species are unaffected.
+species are unaffected. The decay factor and the duty factor enter the effective luminosity
+only; the nominal luminosity is the plain geometric value above.
 
 ### Provenance of the parameter sets used in the paper
 
@@ -109,43 +138,92 @@ studies and were not used in the paper; their sources are not yet recorded here.
 | `chargeDimScaleMP` | Cloud scale of Macroparticle | 1 | `-chargeDimScaleMP s` | side of the macroparticle charge cloud in cells (1 = cloud-in-cell) |
 | `crossingAngle` | Crossing angle of Collision | 0 | `-crossing θ` | half crossing angle θ in radians: each bunch is rotated by ±θ in the (z, y) plane, so the full crossing angle is 2θ |
 
-Physical effects (*Checkboxes* panel / flags): hourglass (`-hourglass`), beam–beam pinch
-(`-pinch`), beamstrahlung (`-beamstrahlung`, requires the pinch), decay (`-decay`). In the
-GUI, enabling any of the first three turns on the macroparticle simulation; on the command
-line the simulation is on by default and `-nosimulation` switches it off (the analytic
-nominal value is then the only output; a `-simulation` flag is accepted but redundant).
-Force interpolation is bicubic Catmull–Rom by default (`-linearinterp` selects bilinear, for
-comparison only); `-nocrossing` ignores the crossing angle. `-betax`, `-betay`, `-bunlen` and
-`-npar <value>` override β*<sub>x</sub>, β*<sub>y</sub>, σ<sub>z</sub> and N of *both* beams for one run without
-editing files. Output modes: human-readable block (default), `-csv` (short), `-profile`
+The command-line engine does not read `save/settings.JSON`: it always starts from the
+defaults listed above and changes them only through the flags; `settings.JSON` sets the
+initial values of the GUI's *Simulation Settings* panel.
+
+Beams on the command line: `-left <folder>/<name>` and `-right <folder>/<name>` select
+`save/<folder>/<name>.JSON` (default `electron-linac/ILC-125` for both; with a folder only, the
+first file in it is used). Physical effects (*Checkboxes* panel / flags): hourglass
+(`-hourglass`), beam–beam pinch (`-pinch`), beamstrahlung (`-beamstrahlung`; on the command
+line it acts only together with `-pinch`), decay (`-decay`). In the GUI, enabling any of the
+first three turns on the macroparticle simulation; on the command line the simulation is on
+by default and `-nosimulation` switches it off (the result is then the analytic value:
+`L_effective` equals `L_nominal` times the decay and duty factors, if any; a `-simulation`
+flag is accepted but redundant). Force interpolation is bicubic Catmull–Rom by default
+(`-linearinterp` selects bilinear, for comparison only); `-nocrossing` ignores the crossing
+angle. `-betax`, `-betay`, `-bunlen` and `-npar <value>` override β*<sub>x</sub>,
+β*<sub>y</sub>, σ<sub>z</sub> and N of *both* beams for one run without editing files.
+`-seed <n>` (a non-negative integer) fixes the random-number stream of the macroparticle
+sampling, so that the run is reproduced exactly; without it every run draws a new sample (the
+GUI always samples without a fixed seed). Output modes: human-readable block (default), `-csv`
+(short: `NumMacPar,XRes,YRes,ZRes,interp,time_ms,L_eff,L_nom,sqrtS,peakMem`), `-profile`
 (per-phase timing CSV), `-fom` (deterministic D<sub>y</sub> and ξ only), `-bsreport`
 (beamstrahlung report).
+
+### Known limitations
+
+- The transverse field solver evaluates a point-charge Green's function at the cell corners.
+  For flat beams it underestimates the vertical beam–beam force when the horizontal cell size
+  exceeds σ<sub>y</sub> (central focusing gradient about 12% low for the EIC and 76% low for
+  the ILC at a 50×50 grid; round beams and HERA are accurate to 0.5–2%). Pinch results for
+  very flat beams are therefore not converged in `XRes`. A cell-averaged Green's function that
+  removes this limitation is planned for the successor code AloHEPy.
+- The strongly disrupted regime (D<sub>y</sub> ≫ 1) is not validated, the beamstrahlung model
+  is preliminary, only a single bunch crossing is simulated, and crossing angles must stay
+  small enough that the rotated bunches remain inside the transverse simulation box.
+- With all effects off, the ratio `L_effective`/`L_nominal` measures the discretisation of the
+  grid (0.993 at 30³ and 0.903 at 10³ for the ILC), not a physical effect.
 
 ## Building from source and running the headless engine (reproducibility)
 
 AloHEP is pure Java (Java 7-compatible syntax; builds and runs unchanged on OpenJDK 8–21,
 benchmarks were run with OpenJDK 17). Its only dependency is the bundled `gson-2.9.1.jar`
-(Apache License 2.0, https://github.com/google/gson). The GUI described above can be started
-from the compiled classes with `java -cp ".:gson-2.9.1.jar:bin" org.hepforge.alohep.Launcher`
-(a packaged `AloHEP.jar` built from the same classes is equivalent); the
-command-line (headless) engine used to produce the published benchmarks is built and run
-from the source tree as follows.
+(Apache License 2.0, https://github.com/google/gson). The GUI can be started from the compiled
+classes with `java -cp ".:gson-2.9.1.jar:bin" org.hepforge.alohep.Launcher`; the command-line
+(headless) engine used to produce the published benchmarks is built and run from the source
+tree as follows.
+
+### Package contents
+
+| Path | Content |
+|---|---|
+| `src/` | Java sources: `Launcher` (GUI) and `HeadlessLauncher` (command line) in `org.hepforge.alohep`, physics engine in `calc/`, GUI panels in `gui/`, animation in `gfx/`, JSON data layer in `database/` |
+| `bin/` | compiled classes (Java 8 bytecode), rebuilt by `build.sh` |
+| `save/` | parameter database (one JSON file per machine in particle-type folders) and `settings.JSON` with the GUI defaults |
+| `gson-2.9.1.jar`, `LICENSE-gson.txt` | JSON library and its licence |
+| `build.sh`, `make_release.sh` | build the classes and the release package (need a JDK ≥ 8 and bash) |
+| `run_*.sh`, `rerun_asymmetric.sh`, `run_all.sh` | benchmark drivers that write the CSV files of `bench_results/` |
+| `bench_results/` | raw benchmark results of the paper, with their own README |
+| `test_run/` | `run_sample.sh`, which runs the sample run below and compares its output with `expected_output.txt` |
+| `generate_plots.py`, `media/` | script (Python 3 with numpy and matplotlib) that draws the data figures of the paper, and the figures |
+| `benchmarks/` | optional JMH micro-benchmark of the interpolation (Maven, Java 17); not needed to run AloHEP |
+| `.classpath`, `.project`, `.settings/` | Eclipse project files |
+| `README.md`, `LICENSE`, `CITATION.cff` | this file, the licence and the citation metadata |
 
 ### Build
 ```
-bash build.sh        # compiles src/ into bin/ with gson-2.9.1.jar on the classpath
+bash build.sh        # compiles src/ into bin/ (Java 8 bytecode) with gson-2.9.1.jar on the classpath
+bash make_release.sh # rebuilds bin/ and packages dist/AloHEP-2.0.zip (AloHEP.jar, gson, save/, test_run/, README, licences)
+                     # and dist/AloHEP-2.0-source.zip (the committed source tree)
 ```
-On Windows (PowerShell/cmd) use `;` instead of `:` as the classpath separator in the
-commands below.
+On Windows without bash (PowerShell), build with
+`javac --release 8 -encoding UTF-8 -cp gson-2.9.1.jar -d bin (Get-ChildItem -Recurse src -Filter *.java).FullName`.
 
 ### Sample run (headless)
 A full electron–proton bunch crossing for the EIC configuration (50×50×50 grid,
-5×10⁴ macroparticles, hourglass and beam–beam pinch enabled):
+5×10⁴ macroparticles, hourglass effect and beam–beam pinch enabled, fixed random seed),
+run inside the extracted release folder:
 ```
-java -cp ".:gson-2.9.1.jar:bin" org.hepforge.alohep.HeadlessLauncher \
+java -cp AloHEP.jar org.hepforge.alohep.HeadlessLauncher \
   -left proton-ele/EIC-PDG1 -right electron-ring/EIC-PDG \
-  -hourglass -pinch -macrop 50000 -xres 50 -yres 50 -zres 50
+  -hourglass -pinch -macrop 50000 -xres 50 -yres 50 -zres 50 -seed 1
 ```
+In a source checkout, after `bash build.sh`, use `-cp ".:gson-2.9.1.jar:bin"` instead of
+`-cp AloHEP.jar` (on Windows `-cp ".;gson-2.9.1.jar;bin"`, with the command typed on one line,
+since the trailing `\` is bash syntax). The same applies to the commands below. The script
+`bash test_run/run_sample.sh` runs this command from either location and compares the output
+with `test_run/expected_output.txt`, ignoring the timing and memory lines.
 
 ### Expected output
 ```
@@ -161,46 +239,81 @@ Pinch:        true
 Hourglass:    true
 Beamstrahlung:false
 Decay:        false
+Seed:         1
 sqrt(s):      1.048809e+02 GeV
-L_nominal:    1.043825e+34 cm^-2 s^-1
-L_effective:  1.02e+34 cm^-2 s^-1
-Ratio eff/nom: 0.976
-Compute time: ~9.2e+04 ms
-Peak memory:  <used-heap growth over the run, machine dependent> MB
+L_nominal:    1.046781e+34 cm^-2 s^-1
+L_effective:  1.021153e+34 cm^-2 s^-1
+Ratio eff/nom: 0.975518
+Compute time: 294713.492 ms
+Peak memory:  69 MB
 --- Per-Phase Breakdown ---
-initMPs:       ~44 ms
-updateQ:       ~300 ms
-updateFi:      ~9.1e+04 ms
-updateForce:   ~10 ms
-collision:     ~2 ms
-pinch:         ~410 ms
-bunchUpdate:   ~56 ms
+initMPs:       56.242 ms
+updateQ:       457.437 ms
+updateFi:      293464.215 ms
+updateForce:   17.996 ms
+collision:     4.114 ms
+pinch:         669.473 ms
+bunchUpdate:   97.598 ms
 ```
-(`L_effective` and `Ratio eff/nom` are the means of the three committed runs in
-`bench_results/results_asymmetric.csv`, rows `eic_ep`; the compute time is for one core of
-an AMD Ryzen 9 9900X.) `sqrt(s)`, `L_nominal` and the figures of merit are deterministic.
-`L_effective` is a Monte-Carlo estimate (Gaussian macroparticle sampling with no fixed seed)
-and varies by a few tenths of a percent (~0.4% for this EIC case) from run to run, so the
-exact `L_effective`, `Ratio eff/nom` and `Compute time` differ slightly each time. `Peak memory`
-is the growth of the used Java heap between a forced garbage collection before the run and the
-end of the run (no collection at the end), so it mostly reflects allocation churn and is not a
-memory requirement; every published run fits within the `-Xmx4g` heap used by the scripts.
+With `-seed 1` every line above except `Compute time`, `Peak memory` and the per-phase
+timings is reproduced exactly; the same output was obtained with Eclipse Temurin 8u504,
+Eclipse Temurin 17.0.20.1 and OpenJDK 21.0.12 on x86-64 Linux. The timings shown are from a
+laptop (Intel Core i7-13700H) and depend on the machine; on the benchmark machine of the paper
+(AMD Ryzen 9 9900X) this run takes about 1.5 min. `Peak memory` is the growth of the used Java
+heap between a forced garbage collection before the run and the end of the run, so it mostly
+reflects allocation churn and is not a memory requirement. The run also prints one line to
+the error stream, `WARNING: macroparticle outside the force grid; zero force applied ...`:
+a few macroparticles of the diverging (hourglass) beams leave the simulated region, where
+they receive no beam–beam force.
 
-For an exactly reproducible check, the deterministic figures of merit (disruption `D_y`
-and the beam–beam tune shifts `ξ`) are printed by `-fom`:
+`L_nominal` is the analytic geometric luminosity of the two beams. Without `-seed` every run
+draws a new macroparticle sample and `L_effective` varies by a few tenths of a percent. The
+three unseeded runs behind the paper (rows `eic_ep` of `bench_results/results_asymmetric.csv`,
+recorded before version 2.0, so that their `L_nom` column still holds the older equal-beam
+value 1.043825e+34) give `L_eff`/`L_geo` = 0.9736 ± 0.0017 (mean ± s.d.) with
+`L_geo` = 1.046781e+34 from `results_lgeo.csv`; the seeded run above (0.9755) lies within
+this scatter.
+
+Two further exact checks are deterministic and take a fraction of a second. The analytic
+luminosity alone (`L_nominal` = `L_effective` = 1.046781e+34 cm^-2 s^-1):
 ```
-java -cp ".:gson-2.9.1.jar:bin" org.hepforge.alohep.HeadlessLauncher \
+java -cp AloHEP.jar org.hepforge.alohep.HeadlessLauncher \
+  -left proton-ele/EIC-PDG1 -right electron-ring/EIC-PDG -nosimulation
+```
+and the figures of merit printed by `-fom`:
+```
+java -cp AloHEP.jar org.hepforge.alohep.HeadlessLauncher \
   -left proton-ele/EIC-PDG1 -right electron-ring/EIC-PDG -fom
 ```
-output — `D_y, ξ_x, ξ_y, ξ_x(code), ξ_y(code)`:
+output — `D_y`, `ξ_x`, `ξ_y` of the `-right` beam (here the electron beam) caused by the
+`-left` beam, followed by `ξ_x`, `ξ_y` recomputed with the routine of the GUI results window
+as a consistency check (swap `-left` and `-right` for the other beam):
 ```
 1.341981,0.072447,0.099672,0.072447,0.099672
 ```
 
 ### Reproducing the paper benchmarks
 The `run_*.sh` scripts regenerate the CSV files in `bench_results/` that back the paper's
-tables and figures (mapped in the paper's "Benchmark data mapping" appendix). For example,
-`bash run_asymmetric.sh` regenerates the HERA and EIC hourglass+pinch results (it rewrites
-`results_asymmetric.csv`), after which `bash run_asymmetric_hgonly.sh` appends the
-hourglass-only control rows, and `bash run_benchmark.sh` regenerates the grid-convergence and
-scaling tables. `bash run_all.sh` chains all of them in the right order.
+tables and figures (mapped in the paper's "Benchmark data mapping" appendix and in
+`bench_results/README.md`). For example, `bash run_asymmetric.sh` regenerates the HERA and EIC
+hourglass+pinch results and the ILC e+e- sign and interpolation runs (it rewrites
+`results_asymmetric.csv` and `results_epinu_sign.csv`), after which
+`bash run_asymmetric_hgonly.sh` appends the hourglass-only control rows, `bash run_lgeo.sh`
+writes the analytic geometric luminosities, and `bash run_benchmark.sh` regenerates the
+grid-convergence and scaling tables. `bash run_all.sh` chains all of them in the right order
+(more than 16 h on the benchmark machine, dominated by the 100³ runs and the hourglass sweep),
+and `python3 generate_plots.py` redraws the figures from the CSV files. The bilinear row of
+the paper's Table 4 (`results_epinu_bilinear_fixed.csv`) corresponds to the `epinu_bilinear`
+runs of `run_asymmetric.sh`. The published runs use the default, unseeded random generator, so
+a rerun reproduces them within the quoted run-to-run scatter rather than digit by digit.
+
+## Citing AloHEP
+
+If you use AloHEP, please cite B. Dağlı, Y. Karaca, *AloHEP Software: A luminosity optimizer
+for High Energy Physics colliders*, arXiv:2610.09839 (2026). Citation metadata for the software
+is given in `CITATION.cff`.
+
+## Licence
+
+AloHEP is released under the MIT License (`LICENSE`). The bundled `gson-2.9.1.jar` (Google
+Gson) is distributed under the Apache License, Version 2.0 (`LICENSE-gson.txt`).

@@ -7,3 +7,6 @@ __pycache__/
 *.out
 *.spl
 target/
+dist/
+test_run/last_output.txt
+test_run/diff.txt
