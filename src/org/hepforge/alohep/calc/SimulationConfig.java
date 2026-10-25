@@ -11,6 +11,7 @@ public class SimulationConfig {
     public boolean beamstrahlung = false;
     public boolean crossingAngle = true;
     public boolean cubicInterpolation = true;
+    public Long seed = null;
 
     public LinkedHashMap<String, Double> settings = new LinkedHashMap<String, Double>();
 

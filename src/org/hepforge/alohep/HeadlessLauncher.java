@@ -38,6 +38,14 @@ public class HeadlessLauncher {
                 config.settings.put("chargeDimScaleMP", Double.parseDouble(params.get("chargeDimScaleMP")));
             if (params.containsKey("crossing"))
                 config.settings.put("crossingAngle", Double.parseDouble(params.get("crossing")));
+            if (params.containsKey("seed")) {
+                try {
+                    config.seed = Long.parseLong(params.get("seed"));
+                } catch (NumberFormatException nfe) {
+                    System.err.println("ERROR: -seed expects a non-negative integer, e.g. -seed 1");
+                    System.exit(1);
+                }
+            }
 
             config.simulation = !params.containsKey("nosimulation");
             config.decay = params.containsKey("decay");
@@ -134,7 +142,7 @@ public class HeadlessLauncher {
                 Bunch L = lumCalc.getBunchL();
                 Bunch R = lumCalc.getBunchR();
                 double dy = lumCalc.getDisruption(L, R)[1];
-                double Z = Math.abs(L.getParticle().getCharge());
+                double Z = Math.abs(L.getParticle().getCharge() / R.getParticle().getCharge());
                 double N = L.getNumberP();
                 double rad = R.getParticle().getRad();
                 double gamma = R.getGamma();
@@ -148,6 +156,7 @@ public class HeadlessLauncher {
             }
 
             if (params.containsKey("bsreport")) {
+                config.simulation = true;
                 config.beamstrahlung = true;
                 if (!config.pinch) {
                     config.pinch = true;
@@ -185,6 +194,8 @@ public class HeadlessLauncher {
                 int zRes = (int) config.getSettingsData("ZRes");
                 if (profile) {
                     LuminosityCalc.Timings t = lumCalc.getTimings();
+                    if (t == null)
+                        t = new LuminosityCalc.Timings();
                     String interp = config.cubicInterpolation ? "cubic" : "linear";
                     System.out.println(numMacPar + "," + xRes + "," + yRes + "," + zRes + ","
                         + interp + ","
@@ -223,6 +234,7 @@ public class HeadlessLauncher {
                 System.out.println("Hourglass:    " + config.hourglass);
                 System.out.println("Beamstrahlung:" + config.beamstrahlung);
                 System.out.println("Decay:        " + config.decay);
+                System.out.println("Seed:         " + (config.seed != null ? config.seed.toString() : "none"));
                 System.out.println("sqrt(s):      " + String.format("%.6e", sqrtS) + " GeV");
                 System.out.println("L_nominal:    " + String.format("%.6e", luminosityRaw) + " cm^-2 s^-1");
                 System.out.println("L_effective:  " + String.format("%.6e", luminosity) + " cm^-2 s^-1");

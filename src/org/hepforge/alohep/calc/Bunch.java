@@ -77,7 +77,7 @@ public class Bunch {
 		{
 			slice[i] = new Slice(lc, i-sliceSize/2);
 		}
-		Random rand = new Random();
+		Random rand = lc.getRandom();
 		for(int i = 0; i < MPcount; i++)
 		{
 			Vector3d pos = new Vector3d();

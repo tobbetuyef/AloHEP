@@ -1,6 +1,7 @@
 package org.hepforge.alohep.calc;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import org.hepforge.alohep.AloHEP;
 import org.hepforge.alohep.calc.LuminosityCalc.Timings;
@@ -35,7 +36,8 @@ public class LuminosityCalc {
 	private Bunch bunchR;
 	private double luminosity = 0;
 	private Timings timings;
-	
+	private Random random;
+
 	public static class Timings {
 		public long initMPsNanos = 0;
 		public long updateQNanos = 0;
@@ -71,14 +73,6 @@ public class LuminosityCalc {
 	
 	public void start()
 	{
-		if(config != null && !config.getCheckbox("simulation"))
-		{
-			return;
-		}
-		if(config == null && !getCheckbox("simulation"))
-		{
-			alohep.getMainPanel().getControlPanel().getSettingsPanel().matchedBeamsSelected();
-		}
 		init();
 		if(getCheckbox("simulation"))
 		{
@@ -108,6 +102,7 @@ public class LuminosityCalc {
 			bunchR.setVelZ(-1.0);
 			
 		timings = new Timings();
+			random = (config != null && config.seed != null) ? new Random(config.seed) : new Random();
 			long initMPsStart = System.nanoTime();
 			bunchL.initMPs();
 			bunchR.initMPs();
@@ -187,6 +182,8 @@ public class LuminosityCalc {
 	{
 			double dt = IPDiff.z / 2;
 			double sign = -Math.signum(bunchL.getParticle().getCharge()*bunchR.getParticle().getCharge());
+			double ratioL = Math.abs(bunchR.getParticle().getCharge()/bunchL.getParticle().getCharge());
+			double ratioR = Math.abs(bunchL.getParticle().getCharge()/bunchR.getParticle().getCharge());
 			double lowerLimit = Math.max(bunchL.minSliceIndex() , bunchR.minSliceIndex());
 			double upperLimit = Math.min(bunchL.maxSliceIndex() , bunchR.maxSliceIndex());
 			boolean profile = timings != null;
@@ -232,8 +229,8 @@ public class LuminosityCalc {
 						MacroParticle MP = sliceL.getMP().get(k);
 						Vector2d force = sliceR.getForce(MP.getPos());
 						
-						double accX = sign*bunchL.getForceConstant()*bunchR.getNumberP()/MP.getGamma()*force.x;
-						double accY = sign*bunchL.getForceConstant()*bunchR.getNumberP()/MP.getGamma()*force.y;
+						double accX = sign*ratioL*bunchL.getForceConstant()*bunchR.getNumberP()/MP.getGamma()*force.x;
+						double accY = sign*ratioL*bunchL.getForceConstant()*bunchR.getNumberP()/MP.getGamma()*force.y;
 						
 						MP.getAcc().add(new Vector3d(accX, accY, 0));
 					}
@@ -242,8 +239,8 @@ public class LuminosityCalc {
 						MacroParticle MP = sliceR.getMP().get(k);
 						Vector2d force = sliceL.getForce(MP.getPos());
 						
-						double accX = sign*bunchR.getForceConstant()*bunchL.getNumberP()/MP.getGamma()*force.x;
-						double accY = sign*bunchR.getForceConstant()*bunchL.getNumberP()/MP.getGamma()*force.y;
+						double accX = sign*ratioR*bunchR.getForceConstant()*bunchL.getNumberP()/MP.getGamma()*force.x;
+						double accY = sign*ratioR*bunchR.getForceConstant()*bunchL.getNumberP()/MP.getGamma()*force.y;
 						MP.getAcc().add(new Vector3d(accX, accY, 0));
 					}
 					t1 = System.nanoTime();
@@ -305,9 +302,6 @@ public class LuminosityCalc {
 		
 		double fc = Math.min(getFCollision(bunchL), getFCollision(bunchR));
 
-		Vector3d sigmaL = bunchL.getSigma();
-		Vector3d sigmaR = bunchR.getSigma();
-
 		double dutyFacR = bunchR.hasData("DutyFac") ? bunchR.getData("DutyFac") : 1;
 		double dutyFacL = bunchL.hasData("DutyFac") ? bunchL.getData("DutyFac") : 1;
 
@@ -316,7 +310,13 @@ public class LuminosityCalc {
 			double numMacPar = getSettingsData("NumMacPar");
 			return 2 * fc * Nsquare * (IPDiff.z/2) / (IPDiff.x *IPDiff.y * IPDiff.z * numMacPar * numMacPar) * luminosity * Math.min(dutyFacR, dutyFacL)*1e-4;
 		}
-		return fc * Nsquare / (4 * Math.PI * Math.max(sigmaL.x, sigmaR.x) * Math.max(sigmaL.y, sigmaR.y)) * 1e-4 *Math.min(dutyFacR, dutyFacL);
+		return fc * Nsquare / getOverlapArea() * 1e-4 *Math.min(dutyFacR, dutyFacL);
+	}
+	public double getOverlapArea()
+	{
+		Vector3d sigmaL = bunchL.getSigma();
+		Vector3d sigmaR = bunchR.getSigma();
+		return 2 * Math.PI * Math.sqrt(sigmaL.x * sigmaL.x + sigmaR.x * sigmaR.x) * Math.sqrt(sigmaL.y * sigmaL.y + sigmaR.y * sigmaR.y);
 	}
 	public double getFCollision(Bunch bunch)
 	{
@@ -362,9 +362,7 @@ public class LuminosityCalc {
 		double fc = Math.min(getFCollision(bunchL), getFCollision(bunchR));	
 		double NL = bunchL.getData("NumParInBun");
 		double NR = bunchR.getData("NumParInBun");
-		Vector3d sigmaL = bunchL.getSigma();
-		Vector3d sigmaR = bunchR.getSigma();
-		return fc * NL * NR / (4 * Math.PI * Math.max(sigmaL.x, sigmaR.x) * Math.max(sigmaL.y, sigmaR.y)) * 1e-4;
+		return fc * NL * NR / getOverlapArea() * 1e-4;
 	}
 	
 	public double[] getDivergence(Bunch B) {
@@ -384,7 +382,7 @@ public class LuminosityCalc {
 		D[1]=0;
 		
 			double gamma = B.getGamma();
-			double Z     = Math.abs(A.getParticle().getCharge());
+			double Z     = Math.abs(A.getParticle().getCharge()/B.getParticle().getCharge());
 			double N     = A.getNumberP();
 			double rad   = B.getParticle().getRad(); 
 			Vector3d sigma = A.getSigma();
@@ -401,7 +399,7 @@ public class LuminosityCalc {
 		BB[1]=0;
 
 			double gamma = B.getGamma();
-			double Z     = Math.abs(A.getParticle().getCharge());
+			double Z     = Math.abs(A.getParticle().getCharge()/B.getParticle().getCharge());
 			double N     = A.getData("NumParInBun");
 			double rad   = B.getParticle().getRad(); 
 			double betaVer = B.getData("BetaVer");
@@ -571,6 +569,12 @@ public class LuminosityCalc {
 
 	public Timings getTimings() {
 		return timings;
+	}
+
+	public Random getRandom() {
+		if(random == null)
+			random = new Random();
+		return random;
 	}
 
 }
