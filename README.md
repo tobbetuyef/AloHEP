@@ -303,9 +303,12 @@ writes the analytic geometric luminosities, and `bash run_benchmark.sh` regenera
 grid-convergence and scaling tables. `bash run_all.sh` chains all of them in the right order
 (more than 16 h on the benchmark machine, dominated by the 100³ runs and the hourglass sweep),
 and `python3 generate_plots.py` redraws the figures from the CSV files. The bilinear row of
-the paper's Table 4 (`results_epinu_bilinear_fixed.csv`) corresponds to the `epinu_bilinear`
-runs of `run_asymmetric.sh`. The published runs use the default, unseeded random generator, so
-a rerun reproduces them within the quoted run-to-run scatter rather than digit by digit.
+the paper's Table 4 comes from the `epinu_bilinear` runs of `run_asymmetric.sh`
+(`results_epinu_sign.csv`, recorded before the 2026-09-17 correction of the bilinear
+interpolation weights, as the table caption states); `results_epinu_bilinear_fixed.csv` is the
+cross-check with the corrected weights quoted in the paper's appendix. The published runs use
+the default, unseeded random generator, so a rerun reproduces them within the quoted
+run-to-run scatter rather than digit by digit.
 
 ## Citing AloHEP
 
